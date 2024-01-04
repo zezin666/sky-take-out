@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ShopController {
     public static final String key = "SHOP_STATUS";
     @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @PutMapping("/{status}")
     @ApiOperation("设置营业状态")
@@ -25,7 +25,7 @@ public class ShopController {
         return Result.success();
     }
 
-    @GetMapping
+    @GetMapping("/status")
     @ApiOperation("查询营业状态")
     public Result<Integer> getStatus(){
         Integer shopStatus = (Integer) redisTemplate.opsForValue().get(key);

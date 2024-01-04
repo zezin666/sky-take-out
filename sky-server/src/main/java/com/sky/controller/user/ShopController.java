@@ -18,7 +18,7 @@ public class ShopController {
     @Autowired
     RedisTemplate redisTemplate;
 
-    @GetMapping
+    @GetMapping("/status")
     @ApiOperation("查询营业状态")
     public Result<Integer> getStatus(){
         Integer shopStatus = (Integer) redisTemplate.opsForValue().get(key);

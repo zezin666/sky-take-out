@@ -11,6 +11,9 @@ sky:
     access-key-secret: y5LvhwBwWZSskihT0cXOczc1EXx01R
     bucket-name: netpure
     endpoint: oss-cn-beijing.aliyuncs.com
+  wechat:
+    appid: wxebf17807852a6102
+    secret: d67afe4267e4067d5c8f5962dda4479b
 
 spring:
   redis:
