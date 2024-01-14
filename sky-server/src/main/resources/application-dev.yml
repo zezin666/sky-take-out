@@ -17,6 +17,6 @@ sky:
 
 spring:
   redis:
-    host: 192.168.1.118
+    host: 20.78.38.216
     port: 6379
-    password: 10241024
+    password: jhkdjhkjdhsIUTYURTU_3epWzc
