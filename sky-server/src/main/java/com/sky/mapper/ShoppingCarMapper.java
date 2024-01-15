@@ -20,5 +20,5 @@ public interface ShoppingCarMapper {
     void insert(ShoppingCart shoppingCart);
 
     @Delete("delete from sky_take_out.shopping_cart where user_id = #{userId}")
-    void updateByUserId(Long userId);
+    void deleteByUserId(Long userId);
 }

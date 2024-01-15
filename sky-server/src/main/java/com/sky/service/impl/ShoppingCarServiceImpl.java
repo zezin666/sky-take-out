@@ -76,6 +76,6 @@ public class ShoppingCarServiceImpl implements ShoppingCarService {
     @Override
     public void clean() {
         Long userId = BaseContext.getCurrentId();
-        shoppingCarMapper.updateByUserId(userId);
+        shoppingCarMapper.deleteByUserId(userId);
     }
 }
