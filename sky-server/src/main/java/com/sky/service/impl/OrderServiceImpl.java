@@ -21,6 +21,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.webSocket.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
 import org.springframework.beans.BeanUtils;
@@ -57,6 +58,8 @@ public class OrderServiceImpl implements OrderService {
     private UserMapper userMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     @Transactional
     @Override//用户下单
@@ -86,7 +89,10 @@ public class OrderServiceImpl implements OrderService {
         orders.setNumber(String.valueOf(System.currentTimeMillis()));
         orders.setPhone(addressBook.getPhone());
         orders.setConsignee(addressBook.getConsignee());
+        orders.setAddress(addressBook.getProvinceName() + addressBook.getCityName() + addressBook.getDistrictName() + addressBook.getDetail());
         orders.setUserId(BaseContext.getCurrentId());
+        orders.setTablewareNumber(ordersSubmitDTO.getTablewareNumber());
+        orders.setTablewareStatus(ordersSubmitDTO.getTablewareStatus());
         orderMapper.insert(orders);
 
         List<OrderDetail> orderDetailList = new ArrayList<>();
@@ -148,6 +154,14 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime check_out_time = LocalDateTime.now();
         Long orderId = orderMapper.getByNumber(ordersPaymentDTO.getOrderNumber()).getId();
         orderMapper.updateStatus(OrderStatus, OrderPaidStatus, check_out_time, orderId);
+
+        //webSocket向浏览器推送消息 这段代码本应写在支付成功回调函数 但本dome项目跳过支付流程
+        Map map = new HashMap();
+        map.put("type",1);//1表示来单提醒 2表示用户催单
+        map.put("orderId",orderId);
+        map.put("content","订单号：" + ordersPaymentDTO.getOrderNumber());
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
         return vo;
     }
 
@@ -168,7 +182,6 @@ public class OrderServiceImpl implements OrderService {
                 .payStatus(Orders.PAID)
                 .checkoutTime(LocalDateTime.now())
                 .build();
-
         orderMapper.update(orders);
     }
 
@@ -329,6 +342,21 @@ public class OrderServiceImpl implements OrderService {
         orders.setId(id);
         orders.setStatus(Orders.COMPLETED);
         orderMapper.update(orders);
+    }
+
+    @Override
+    public void remind(Long id) {
+        Orders orderDB = orderMapper.getById(id);
+        if(orderDB == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        Map map = new HashMap<>();
+        map.put("type",2);
+        map.put("orderId",id);
+        map.put("content","订单号" + orderDB.getNumber());
+        String jsonString = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
     }
 
 
