@@ -57,4 +57,16 @@
         </where>
         order by order_time desc
     </select>
+    <select id="getTurnoverByDate" resultType="java.lang.Double">
+           select sum(orders.amount) from orders
+           <where>
+               <if test="begin != null">
+                   and order_time &gt; #{begin}
+               </if>
+           <if test="end != null">
+               and order_time &lt; #{end}
+           </if>
+           and status = 5;
+           </where>
+    </select>
 </mapper>
