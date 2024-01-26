@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 
@@ -47,4 +48,6 @@ public interface OrderMapper {
 
     //@Select("select sum(amount) from orders where status = 5 and order_time > #{begin} and order_time < #{end}")
     Double getTurnoverByDate(LocalDateTime begin, LocalDateTime end);
+
+    Integer getByMap(Map map);
 }
