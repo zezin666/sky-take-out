@@ -7,16 +7,16 @@ sky:
     username: root
     password: 1024
   alioss:
-    access-key-id: LTAI5tMPNYSPbzUqzsv9norK
-    access-key-secret: y5LvhwBwWZSskihT0cXOczc1EXx01R
-    bucket-name: netpure
-    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: 
+    access-key-secret: 
+    bucket-name: 
+    endpoint: 
   wechat:
-    appid: wxebf17807852a6102
-    secret: d67afe4267e4067d5c8f5962dda4479b
+    appid: 
+    secret: 
 
 spring:
   redis:
-    host: 20.78.38.216
+    host: 
     port: 6379
-    password: jhkdjhkjdhsIUTYURTU_hzMrap
+    password: 
