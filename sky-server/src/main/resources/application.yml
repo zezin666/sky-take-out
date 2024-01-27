@@ -52,6 +52,6 @@ sky:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
   shop:
-    address: 湖南省长沙市岳麓区长沙市政府
+    address: 
   baidu:
-    ak: kq0O7wr8piFFj0otTvDVyosgLs4hcc1x
+    ak: 
